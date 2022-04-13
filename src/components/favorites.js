@@ -23,7 +23,7 @@ import {
     IconButton,
     useToast,
 } from '@chakra-ui/core'
-import useLS, { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey, deleteItem } from "../utils/localstorage";
+import { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey, deleteItem } from "../utils/localstorage";
 import { Link } from "react-router-dom";
 
 
@@ -31,9 +31,8 @@ export default function Favorites() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
-
-    const launchesArr = useLS()[0];
-    const launchPadsArr = useLS()[1];
+    const launchesArr = getItems(favLaunchesArrayKey);
+    const launchPadsArr = getItems(favLaunchpadsArrayKey);
     const toast = useToast();
 
     return (
