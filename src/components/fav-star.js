@@ -30,6 +30,7 @@ export default function FavoriteStar({ launch, lsKey, icon='star' }) {
                 duration: 2500,
                 isClosable: true,
               });
+              if(icon!=='star') window.location.reload();
             } else {
               saveItem(lsKey, launch);
               updateFav(true);
@@ -40,6 +41,7 @@ export default function FavoriteStar({ launch, lsKey, icon='star' }) {
                 duration: 2500,
                 isClosable: true,
               });
+              if(icon!=='star') window.location.reload();
             }
           }}
         />

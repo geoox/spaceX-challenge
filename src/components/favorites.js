@@ -39,6 +39,7 @@ export default function Favorites() {
                 Favorites
             </Button>
             <Drawer
+                scrollBehavior={'inside'} blockScrollOnMount={false}
                 isOpen={isOpen}
                 placement='right'
                 onClose={onClose}
