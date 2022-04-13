@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Badge, Box, Image, SimpleGrid, Text, Flex, IconButton } from "@chakra-ui/core";
+import React from "react";
+import { Badge, Box, Image, SimpleGrid, Text, Flex } from "@chakra-ui/core";
 import { format as timeAgo } from "timeago.js";
 import { Link } from "react-router-dom";
 
@@ -8,8 +8,8 @@ import { formatDate } from "../utils/format-date";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
-import { saveItem, favLaunchesArrayKey, existsItem, deleteItem } from "../utils/localstorage";
-import { useToast } from "@chakra-ui/core";
+import { favLaunchesArrayKey, } from "../utils/localstorage";
+import FavoriteStar from "./fav-star";
 
 const PAGE_SIZE = 12;
 
@@ -48,12 +48,6 @@ export default function Launches() {
 }
 
 export function LaunchItem({ launch }) {
-  const toast = useToast();
-
-  const [isFav, updateFav] = useState(false);
-  useEffect(() => {
-    updateFav(existsItem(favLaunchesArrayKey, launch));
-  }, [launch]);
   return (
     <Box
       as={Link}
@@ -107,40 +101,8 @@ export function LaunchItem({ launch }) {
           >
             {launch.rocket.rocket_name} &bull; {launch.launch_site.site_name}
           </Box>
-          <Box ml="auto">
-            <IconButton
-              variantColor={isFav ? 'red' : 'yellow'}
-              aria-label="favorite"
-              size="sm"
-              icon="star"
-              onClick={(event) => {
-                event.preventDefault();
-                if (isFav) {
-                  deleteItem(favLaunchesArrayKey, launch);
-                  updateFav(false);
-                  toast({
-                    title: "Item removed from favorites.",
-                    description: "Item is no longer available in the favorites list.",
-                    status: "success",
-                    duration: 2500,
-                    isClosable: true,
-                  });
-                } else {
-                  saveItem(favLaunchesArrayKey, launch);
-                  updateFav(true);
-                  toast({
-                    title: "Item added to favorites.",
-                    description: "Item is added to favorites list.",
-                    status: "success",
-                    duration: 2500,
-                    isClosable: true,
-                  });
-                }
-              }}
-            />
-          </Box>
+          <FavoriteStar launch={launch} lsKey={favLaunchesArrayKey}></FavoriteStar>
         </Box>
-
         <Box
           mt="1"
           fontWeight="semibold"

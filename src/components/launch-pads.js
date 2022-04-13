@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from "react";
-import { Badge, Box, SimpleGrid, Text, useToast, IconButton } from "@chakra-ui/core";
+import React from "react";
+import { Badge, Box, SimpleGrid, Text, } from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
 import { useSpaceXPaginated } from "../utils/use-space-x";
-import { favLaunchpadsArrayKey, existsItem, deleteItem, saveItem } from "../utils/localstorage";
+import { favLaunchpadsArrayKey, } from "../utils/localstorage";
+import FavoriteStar from "./fav-star";
 
 const PAGE_SIZE = 12;
 
@@ -44,12 +45,6 @@ export default function LaunchPads() {
 }
 
 function LaunchPadItem({ launchPad }) {
-  const toast = useToast();
-
-  const [isFav, updateFav] = useState(false);
-  useEffect(() => {
-    updateFav(existsItem(favLaunchpadsArrayKey, launchPad));
-  }, [launchPad]);
   return (
     <Box
       as={Link}
@@ -82,38 +77,7 @@ function LaunchPadItem({ launchPad }) {
             {launchPad.attempted_launches} attempted &bull;{" "}
             {launchPad.successful_launches} succeeded
           </Box>
-          <Box ml="auto">
-            <IconButton
-              variantColor={isFav ? 'red' : 'yellow'}
-              aria-label="favorite"
-              size="sm"
-              icon="star"
-              onClick={(event) => {
-                event.preventDefault();
-                if (isFav) {
-                  deleteItem(favLaunchpadsArrayKey, launchPad);
-                  updateFav(false);
-                  toast({
-                    title: "Item removed from favorites.",
-                    description: "Item is no longer available in the favorites list.",
-                    status: "success",
-                    duration: 2500,
-                    isClosable: true,
-                  });
-                } else {
-                  saveItem(favLaunchpadsArrayKey, launchPad);
-                  updateFav(true);
-                  toast({
-                    title: "Item added to favorites.",
-                    description: "Item is added to favorites list.",
-                    status: "success",
-                    duration: 2500,
-                    isClosable: true,
-                  });
-                }
-              }}
-            />
-          </Box>
+          <FavoriteStar launch={launchPad} lsKey={favLaunchpadsArrayKey}></FavoriteStar>
         </Box>
 
         <Box
