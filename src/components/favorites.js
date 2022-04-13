@@ -9,8 +9,22 @@ import {
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,
+    Accordion,
+    AccordionItem,
+    AccordionHeader,
+    AccordionPanel,
+    AccordionIcon,
+    Box,
+    Flex,
+    Avatar,
+    Text,
+    Badge,
+    Divider,
+    IconButton,
+    useToast,
 } from '@chakra-ui/core'
-import { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey } from "../utils/localstorage";
+import useLS, { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey, deleteItem } from "../utils/localstorage";
+import { Link } from "react-router-dom";
 
 
 export default function Favorites() {
@@ -18,10 +32,9 @@ export default function Favorites() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
 
-    const favoriteLaunchesArr = getItems(favLaunchesArrayKey);
-    const favLPadsArr = getItems(favLaunchpadsArrayKey);
-
-    console.log({ favLPadsArr, favoriteLaunchesArr });
+    const launchesArr = useLS()[0];
+    const launchPadsArr = useLS()[1];
+    const toast = useToast();
 
     return (
         <>
@@ -38,8 +51,123 @@ export default function Favorites() {
                 <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerHeader>Favorites</DrawerHeader>
-
                     <DrawerBody>
+                        <Accordion defaultIndex={[0, 1]} allowMultiple>
+                            <AccordionItem>
+                                <AccordionHeader>
+                                    <Box flex="1" textAlign="left">
+                                        Launches
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionHeader>
+                                <AccordionPanel pb={4}>
+                                    {
+                                        launchesArr.map((launch, index) =>
+                                            <Box
+                                                key={launch.flight_number}
+                                                as={Link}
+                                                to={`/launches/${launch.flight_number.toString()}`}
+                                            >
+                                                <Flex>
+                                                    <Avatar src={
+                                                        launch.links.flickr_images[0]?.replace("_o.jpg", "_z.jpg") ??
+                                                        launch.links.mission_patch_small
+                                                    } />
+                                                    <Box ml="3">
+                                                        <Text fontWeight="bold">
+                                                            {launch.mission_name}
+                                                        </Text>
+                                                        {launch.launch_success ?
+                                                            <Badge variantColor="green">
+                                                                Successful
+                                                            </Badge> : <Badge ml="1" variantColor="red">
+                                                                Failure
+                                                            </Badge>}
+                                                        <Text fontSize="sm">{launch.rocket.rocket_name}</Text>
+                                                    </Box>
+                                                    <Box ml="auto">
+                                                        <IconButton
+                                                            variantColor='red'
+                                                            aria-label="delete"
+                                                            size="sm"
+                                                            icon="delete"
+                                                            onClick={(event) => {
+                                                                event.preventDefault();
+                                                                deleteItem(favLaunchesArrayKey, launch);
+                                                                toast({
+                                                                    title: "Item removed from favorites.",
+                                                                    description: "Item is no longer available in the favorites list.",
+                                                                    status: "success",
+                                                                    duration: 2500,
+                                                                    isClosable: true,
+                                                                });
+
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                </Flex>
+                                                <Divider />
+                                            </Box>)
+                                    }
+                                </AccordionPanel>
+                            </AccordionItem>
+
+                            <AccordionItem>
+                                <AccordionHeader>
+                                    <Box flex="1" textAlign="left">
+                                        Launch pads
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionHeader>
+                                <AccordionPanel pb={4}>
+                                    {
+                                        launchPadsArr.map((launch, index) =>
+                                            <Box
+                                                key={launch.site_id}
+                                                as={Link}
+                                                to={`/launch-pads/${launch.site_id}`}
+                                            >
+                                                <Flex>
+                                                    <Avatar src="https://cdn.mos.cms.futurecdn.net/UxLKZUsHmYviVWneMofwME.jpg" />
+                                                    <Box ml="3">
+                                                        <Text fontWeight="bold">
+                                                            {launch.name}
+                                                        </Text>
+                                                        {launch.status === 'active' ?
+                                                            <Badge variantColor="green">
+                                                                Active
+                                                            </Badge> : <Badge ml="1" variantColor="red">
+                                                                Retired
+                                                            </Badge>}
+                                                        <Text fontSize="sm">{launch.vehicles_launched.toString()}</Text>
+                                                    </Box>
+                                                    <Box ml="auto">
+                                                        <IconButton
+                                                            variantColor='red'
+                                                            aria-label="delete"
+                                                            size="sm"
+                                                            icon="delete"
+                                                            onClick={(event) => {
+                                                                event.preventDefault();
+                                                                deleteItem(favLaunchpadsArrayKey, launch);
+                                                                toast({
+                                                                    title: "Item removed from favorites.",
+                                                                    description: "Item is no longer available in the favorites list.",
+                                                                    status: "success",
+                                                                    duration: 2500,
+                                                                    isClosable: true,
+                                                                });
+
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                </Flex>
+                                                <Divider />
+                                            </Box>)
+                                    }
+                                </AccordionPanel>
+                            </AccordionItem>
+                        </Accordion>
 
                     </DrawerBody>
 
