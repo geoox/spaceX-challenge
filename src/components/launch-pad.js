@@ -21,6 +21,8 @@ import { useSpaceX } from "../utils/use-space-x";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import { LaunchItem } from "./launches";
+import FavoriteStar from "./fav-star";
+import { favLaunchpadsArrayKey, } from "../utils/localstorage";
 
 export default function LaunchPad() {
   let { launchPadId } = useParams();
@@ -105,6 +107,7 @@ function Header({ launchPad }) {
             Retired
           </Badge>
         )}
+        <FavoriteStar launch={launchPad} lsKey={favLaunchpadsArrayKey}></FavoriteStar>
       </Stack>
     </Flex>
   );

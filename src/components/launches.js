@@ -8,6 +8,8 @@ import { formatDate } from "../utils/format-date";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
+import { favLaunchesArrayKey, } from "../utils/localstorage";
+import FavoriteStar from "./fav-star";
 
 const PAGE_SIZE = 12;
 
@@ -20,7 +22,6 @@ export default function Launches() {
       sort: "launch_date_utc",
     }
   );
-  console.log(data, error);
   return (
     <div>
       <Breadcrumbs
@@ -99,8 +100,8 @@ export function LaunchItem({ launch }) {
           >
             {launch.rocket.rocket_name} &bull; {launch.launch_site.site_name}
           </Box>
+          <FavoriteStar launch={launch} lsKey={favLaunchesArrayKey}></FavoriteStar>
         </Box>
-
         <Box
           mt="1"
           fontWeight="semibold"

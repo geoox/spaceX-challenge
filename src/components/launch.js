@@ -26,6 +26,8 @@ import { useSpaceX } from "../utils/use-space-x";
 import { formatDateTime, formatLocalDateTime } from "../utils/format-date";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
+import FavoriteStar from "./fav-star";
+import { favLaunchesArrayKey, } from "../utils/localstorage";
 
 export default function Launch() {
   let { launchId } = useParams();
@@ -109,6 +111,7 @@ function Header({ launch }) {
             Failed
           </Badge>
         )}
+        <FavoriteStar launch={launch} lsKey={favLaunchesArrayKey}></FavoriteStar>
       </Stack>
     </Flex>
   );

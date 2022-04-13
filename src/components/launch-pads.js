@@ -1,11 +1,13 @@
 import React from "react";
-import { Badge, Box, SimpleGrid, Text } from "@chakra-ui/core";
+import { Badge, Box, SimpleGrid, Text, } from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
 import { useSpaceXPaginated } from "../utils/use-space-x";
+import { favLaunchpadsArrayKey, } from "../utils/localstorage";
+import FavoriteStar from "./fav-star";
 
 const PAGE_SIZE = 12;
 
@@ -74,6 +76,7 @@ function LaunchPadItem({ launchPad }) {
             {launchPad.attempted_launches} attempted &bull;{" "}
             {launchPad.successful_launches} succeeded
           </Box>
+          <FavoriteStar launch={launchPad} lsKey={favLaunchpadsArrayKey}></FavoriteStar>
         </Box>
 
         <Box
@@ -85,6 +88,7 @@ function LaunchPadItem({ launchPad }) {
         >
           {launchPad.name}
         </Box>
+        
         <Text color="gray.500" fontSize="sm">
           {launchPad.vehicles_launched.join(", ")}
         </Text>
