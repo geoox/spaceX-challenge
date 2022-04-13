@@ -20,7 +20,7 @@ export const deleteItem = (key, object) => {
 }
 
 export const getItems = (key) => {
-    return JSON.parse(localStorage.getItem(key));
+    return JSON.parse(localStorage.getItem(key) || "[]");
 }
 
 // return true if item exists in ls
