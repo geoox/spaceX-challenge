@@ -76,7 +76,7 @@ function LaunchPadItem({ launchPad }) {
             {launchPad.attempted_launches} attempted &bull;{" "}
             {launchPad.successful_launches} succeeded
           </Box>
-          <FavoriteStar launch={launchPad} lsKey={favLaunchpadsArrayKey} ></FavoriteStar>
+          <FavoriteStar launch={launchPad} lsKey={favLaunchpadsArrayKey}></FavoriteStar>
         </Box>
 
         <Box

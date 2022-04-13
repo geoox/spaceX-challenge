@@ -3,7 +3,7 @@ import { saveItem, existsItem, deleteItem } from "../utils/localstorage";
 import { useToast, Box, IconButton } from "@chakra-ui/core";
 
 
-export default function FavoriteStar({ launch, lsKey }) {
+export default function FavoriteStar({ launch, lsKey, icon='star' }) {
     const toast = useToast();
   
     const [isFav, updateFav] = useState(false);
@@ -17,7 +17,7 @@ export default function FavoriteStar({ launch, lsKey }) {
           variantColor={isFav ? 'red' : 'yellow'}
           aria-label="favorite"
           size="sm"
-          icon="star"
+          icon={icon}
           onClick={(event) => {
             event.preventDefault();
             if (isFav) {

@@ -83,7 +83,7 @@ export default function Favorites() {
                                                         <Text fontSize="sm">{launch.rocket.rocket_name}</Text>
                                                     </Box>
                                                     <Box ml="auto">
-                                                    <FavoriteStar id={launch.flight_number} launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
+                                                    <FavoriteStar launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
                                                     </Box>
                                                 </Flex>
                                                 <Divider />
@@ -122,7 +122,7 @@ export default function Favorites() {
                                                         <Text fontSize="sm">{launch.vehicles_launched.toString()}</Text>
                                                     </Box>
                                                     <Box ml="auto">
-                                                    <FavoriteStar key={launch.site_id} launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
+                                                    <FavoriteStar launch={launch} lsKey={favLaunchpadsArrayKey} icon="delete"></FavoriteStar>
                                                     </Box>
                                                 </Flex>
                                                 <Divider />
