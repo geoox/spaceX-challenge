@@ -20,11 +20,10 @@ import {
     Text,
     Badge,
     Divider,
-    IconButton,
-    useToast,
 } from '@chakra-ui/core'
-import { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey, deleteItem } from "../utils/localstorage";
+import { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey } from "../utils/localstorage";
 import { Link } from "react-router-dom";
+import FavoriteStar from "./fav-star";
 
 
 export default function Favorites() {
@@ -33,7 +32,6 @@ export default function Favorites() {
     const btnRef = React.useRef()
     const launchesArr = getItems(favLaunchesArrayKey);
     const launchPadsArr = getItems(favLaunchpadsArrayKey);
-    const toast = useToast();
 
     return (
         <>
@@ -85,24 +83,7 @@ export default function Favorites() {
                                                         <Text fontSize="sm">{launch.rocket.rocket_name}</Text>
                                                     </Box>
                                                     <Box ml="auto">
-                                                        <IconButton
-                                                            variantColor='red'
-                                                            aria-label="delete"
-                                                            size="sm"
-                                                            icon="delete"
-                                                            onClick={(event) => {
-                                                                event.preventDefault();
-                                                                deleteItem(favLaunchesArrayKey, launch);
-                                                                toast({
-                                                                    title: "Item removed from favorites.",
-                                                                    description: "Item is no longer available in the favorites list.",
-                                                                    status: "success",
-                                                                    duration: 2500,
-                                                                    isClosable: true,
-                                                                });
-
-                                                            }}
-                                                        />
+                                                    <FavoriteStar id={launch.flight_number} launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
                                                     </Box>
                                                 </Flex>
                                                 <Divider />
@@ -141,24 +122,7 @@ export default function Favorites() {
                                                         <Text fontSize="sm">{launch.vehicles_launched.toString()}</Text>
                                                     </Box>
                                                     <Box ml="auto">
-                                                        <IconButton
-                                                            variantColor='red'
-                                                            aria-label="delete"
-                                                            size="sm"
-                                                            icon="delete"
-                                                            onClick={(event) => {
-                                                                event.preventDefault();
-                                                                deleteItem(favLaunchpadsArrayKey, launch);
-                                                                toast({
-                                                                    title: "Item removed from favorites.",
-                                                                    description: "Item is no longer available in the favorites list.",
-                                                                    status: "success",
-                                                                    duration: 2500,
-                                                                    isClosable: true,
-                                                                });
-
-                                                            }}
-                                                        />
+                                                    <FavoriteStar key={launch.site_id} launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
                                                     </Box>
                                                 </Flex>
                                                 <Divider />
