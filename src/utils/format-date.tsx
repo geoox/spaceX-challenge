@@ -1,4 +1,4 @@
-export function formatDate(timestamp) {
+export function formatDate(timestamp:any) {
   return new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     year: "numeric",
@@ -7,7 +7,7 @@ export function formatDate(timestamp) {
   }).format(new Date(timestamp));
 }
 
-export function formatDateTime(timestamp) {
+export function formatDateTime(timestamp:any) {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
@@ -23,7 +23,7 @@ export function formatDateTime(timestamp) {
 function which returns date in string format without affecting the original timezone
 aka beautify the string
 */
-export function formatLocalDateTime(timestamp){
+export function formatLocalDateTime(timestamp:any){
   var dateArr = timestamp.split('T');
   var time = dateArr[1].substring(0,8);
   var offset = dateArr[1].substring(8);

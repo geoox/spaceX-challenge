@@ -24,6 +24,8 @@ import {
 import { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey } from "../utils/localstorage";
 import { Link } from "react-router-dom";
 import FavoriteStar from "./fav-star";
+import { Launch as LaunchModel } from "../models/launch";
+import { Launchpad } from "../models/launchpad";
 
 
 export default function Favorites() {
@@ -43,7 +45,6 @@ export default function Favorites() {
                 isOpen={isOpen}
                 placement='right'
                 onClose={onClose}
-                finalFocusRef={btnRef}
             >
                 <DrawerOverlay />
                 <DrawerContent>
@@ -60,10 +61,12 @@ export default function Favorites() {
                                 </AccordionHeader>
                                 <AccordionPanel pb={4}>
                                     {
-                                        launchesArr.map((launch, index) =>
+                                        launchesArr.map((launch: LaunchModel) =>
                                             <Box
                                                 key={launch.flight_number}
                                                 as={Link}
+                                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                // @ts-ignore
                                                 to={`/launches/${launch.flight_number.toString()}`}
                                             >
                                                 <Flex>
@@ -102,10 +105,12 @@ export default function Favorites() {
                                 </AccordionHeader>
                                 <AccordionPanel pb={4}>
                                     {
-                                        launchPadsArr.map((launch, index) =>
+                                        launchPadsArr.map((launch: Launchpad) =>
                                             <Box
                                                 key={launch.site_id}
                                                 as={Link}
+                                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                // @ts-ignore
                                                 to={`/launch-pads/${launch.site_id}`}
                                             >
                                                 <Flex>

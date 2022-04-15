@@ -14,7 +14,6 @@ import {
   Text,
   Spinner,
   Stack,
-  AspectRatioBox,
 } from "@chakra-ui/core";
 
 import { useSpaceX } from "../utils/use-space-x";
