@@ -10,11 +10,12 @@ import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
 import { favLaunchesArrayKey, } from "../utils/localstorage";
 import FavoriteStar from "./fav-star";
+import { Launch as LaunchModel } from "../models/launch";
 
 const PAGE_SIZE = 12;
 
 export default function Launches() {
-  const { data, error, isValidating, setSize, size } = useSpaceXPaginated(
+  const { data, error, isValidating, setSize, size }: any = useSpaceXPaginated(
     "/launches/past",
     {
       limit: PAGE_SIZE,
@@ -25,14 +26,14 @@ export default function Launches() {
   return (
     <div>
       <Breadcrumbs
-        items={[{ label: "Home", to: "/" }, { label: "Launches" }]}
+        items={[{ label: "Home", to: "/" }, { label: "Launches", to:'' }]}
       />
       <SimpleGrid m={[2, null, 6]} minChildWidth="350px" spacing="4">
         {error && <Error />}
         {data &&
           data
             .flat()
-            .map((launch) => (
+            .map((launch:LaunchModel) => (
               <LaunchItem launch={launch} key={launch.flight_number} />
             ))}
       </SimpleGrid>
@@ -46,10 +47,12 @@ export default function Launches() {
   );
 }
 
-export function LaunchItem({ launch }) {
+export function LaunchItem({ launch }: {launch: LaunchModel}) {
   return (
     <Box
       as={Link}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       to={`/launches/${launch.flight_number.toString()}`}
       boxShadow="md"
       borderWidth="1px"
@@ -73,7 +76,7 @@ export function LaunchItem({ launch }) {
         position="absolute"
         top="5"
         right="5"
-        src={launch.links.mission_patch_small}
+        src={launch.links.mission_patch_small ?? ''}
         height="75px"
         objectFit="contain"
         objectPosition="bottom"

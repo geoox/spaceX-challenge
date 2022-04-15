@@ -8,11 +8,12 @@ import LoadMoreButton from "./load-more-button";
 import { useSpaceXPaginated } from "../utils/use-space-x";
 import { favLaunchpadsArrayKey, } from "../utils/localstorage";
 import FavoriteStar from "./fav-star";
+import { Launchpad } from "../models/launchpad";
 
 const PAGE_SIZE = 12;
 
 export default function LaunchPads() {
-  const { data, error, isValidating, size, setSize } = useSpaceXPaginated(
+  const { data, error, isValidating, size, setSize } : any = useSpaceXPaginated(
     "/launchpads",
     {
       limit: PAGE_SIZE,
@@ -22,14 +23,14 @@ export default function LaunchPads() {
   return (
     <div>
       <Breadcrumbs
-        items={[{ label: "Home", to: "/" }, { label: "Launch Pads" }]}
+        items={[{ label: "Home", to: "/" }, { label: "Launch Pads", to: '' }]}
       />
       <SimpleGrid m={[2, null, 6]} minChildWidth="350px" spacing="4">
         {error && <Error />}
         {data &&
           data
             .flat()
-            .map((launchPad) => (
+            .map((launchPad:Launchpad) => (
               <LaunchPadItem key={launchPad.site_id} launchPad={launchPad} />
             ))}
       </SimpleGrid>
@@ -43,10 +44,13 @@ export default function LaunchPads() {
   );
 }
 
-function LaunchPadItem({ launchPad }) {
+
+function LaunchPadItem({ launchPad }:{launchPad: Launchpad}) {
   return (
     <Box
       as={Link}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       to={`/launch-pads/${launchPad.site_id}`}
       boxShadow="md"
       borderWidth="1px"

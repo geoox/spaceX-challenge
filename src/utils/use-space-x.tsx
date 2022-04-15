@@ -1,14 +1,14 @@
 import useSWR, { useSWRInfinite } from "swr";
 
-const fetcher = async (...args) => {
-  const response = await fetch(...args);
+const fetcher = async (...args:any) => {
+  const response = await fetch.apply(null, args);
   if (!response.ok) {
     throw Error(response.statusText);
   }
   return await response.json();
 };
 
-function getSpaceXUrl(path, options) {
+function getSpaceXUrl(path: string, options: any) {
   const searchParams = new URLSearchParams();
   for (const property in options) {
     searchParams.append(property, options[property]);
@@ -18,12 +18,12 @@ function getSpaceXUrl(path, options) {
   return `${spaceXApiBase}${path}?${searchParams.toString()}`;
 }
 
-export function useSpaceX(path, options) {
+export function useSpaceX(path: string, options?: any) {
   const endpointUrl = getSpaceXUrl(path, options);
   return useSWR(path ? endpointUrl : null, fetcher);
 }
 
-export function useSpaceXPaginated(path, options) {
+export function useSpaceXPaginated(path:string, options: any) {
   return useSWRInfinite((pageIndex, previousPageData) => {
     if (previousPageData && !previousPageData.length) {
       return null;

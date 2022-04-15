@@ -8,7 +8,16 @@ import {
 import { Link } from "react-router-dom";
 import { ChevronsRight } from "react-feather";
 
-export default function Breadcrumbs({ items }) {
+export type BreadcrumbItemsProps = {
+  items: BreadcrumbItemProps[]
+}
+
+export type BreadcrumbItemProps = {
+  to: string,
+  label: string
+}
+
+export default function Breadcrumbs({ items }: BreadcrumbItemsProps) {
   return (
     <Breadcrumb
       m="6"
@@ -20,6 +29,8 @@ export default function Breadcrumbs({ items }) {
         return (
           <BreadcrumbItem isCurrentPage={isCurrentPage} key={item.label}>
             <BreadcrumbLink
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
               as={!isCurrentPage ? Link : undefined}
               to={!isCurrentPage ? item.to : undefined}
             >

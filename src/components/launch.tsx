@@ -17,7 +17,6 @@ import {
   Image,
   Link,
   Stack,
-  AspectRatioBox,
   StatGroup,
   Tooltip
 } from "@chakra-ui/core";
@@ -28,11 +27,11 @@ import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import FavoriteStar from "./fav-star";
 import { favLaunchesArrayKey, } from "../utils/localstorage";
+import { Launch as LaunchModel } from "../models/launch";
 
 export default function Launch() {
   let { launchId } = useParams();
   const { data: launch, error } = useSpaceX(`/launches/${launchId}`);
-
   if (error) return <Error />;
   if (!launch) {
     return (
@@ -48,7 +47,7 @@ export default function Launch() {
         items={[
           { label: "Home", to: "/" },
           { label: "Launches", to: ".." },
-          { label: `#${launch.flight_number}` },
+          { label: `#${launch.flight_number}`, to:'' },
         ]}
       />
       <Header launch={launch} />
@@ -65,24 +64,25 @@ export default function Launch() {
   );
 }
 
-function Header({ launch }) {
+function Header({ launch }:{launch: LaunchModel}) {
   return (
     <Flex
       bgImage={`url(${launch.links.flickr_images[0]})`}
       bgPos="center"
       bgSize="cover"
-      bgRepeat="no-repeat"
+      backgroundRepeat='no-repeat'
       minHeight="30vh"
       position="relative"
       p={[2, 6]}
       alignItems="flex-end"
       justifyContent="space-between"
     >
+      <Image src=""></Image>
       <Image
         position="absolute"
         top="5"
         right="5"
-        src={launch.links.mission_patch_small}
+        src={launch.links.mission_patch_small ?? ''}
         height={["85px", "150px"]}
         objectFit="contain"
         objectPosition="bottom"
@@ -117,7 +117,7 @@ function Header({ launch }) {
   );
 }
 
-function TimeAndLocation({ launch }) {
+function TimeAndLocation({ launch }:{launch: LaunchModel}) {
   return (
     <SimpleGrid columns={[1, 1, 2]} borderWidth="1px" p="4" borderRadius="md">
 
@@ -146,6 +146,8 @@ function TimeAndLocation({ launch }) {
         </StatLabel>
         <StatNumber fontSize={["md", "xl"]}>
           <Link
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             as={RouterLink}
             to={`/launch-pads/${launch.launch_site.site_id}`}
           >
@@ -158,7 +160,7 @@ function TimeAndLocation({ launch }) {
   );
 }
 
-function RocketInfo({ launch }) {
+function RocketInfo({ launch }:{launch: LaunchModel}) {
   const cores = launch.rocket.first_stage.cores;
 
   return (
@@ -222,23 +224,20 @@ function RocketInfo({ launch }) {
   );
 }
 
-function Video({ launch }) {
+function Video({ launch }:{launch: LaunchModel}) {
   return (
-    <AspectRatioBox maxH="400px" ratio={1.7}>
-      <Box
-        as="iframe"
-        title={launch.mission_name}
+      <iframe
+      style={{width:'97vw', height: '40vh'}}
+      title={launch.mission_name}
         src={`https://www.youtube.com/embed/${launch.links.youtube_id}`}
-        allowFullScreen
       />
-    </AspectRatioBox>
   );
 }
 
-function Gallery({ images }) {
+function Gallery({ images }:any) {
   return (
     <SimpleGrid my="6" minChildWidth="350px" spacing="4">
-      {images.map((image) => (
+      {images.map((image: string) => (
         <a href={image} key={image}>
           <Image src={image.replace("_o.jpg", "_z.jpg")} />
         </a>
