@@ -23,12 +23,14 @@ import Breadcrumbs from "./breadcrumbs";
 import { LaunchItem } from "./launches";
 import FavoriteStar from "./fav-star";
 import { favLaunchpadsArrayKey, } from "../utils/localstorage";
+import { Launchpad, Location } from "../models/launchpad";
+import { Launch } from "../models/launch";
 
 export default function LaunchPad() {
   let { launchPadId } = useParams();
   const { data: launchPad, error } = useSpaceX(`/launchpads/${launchPadId}`);
 
-  const { data: launches } = useSpaceX(launchPad ? "/launches/past" : null, {
+  const { data: launches } = useSpaceX(launchPad ? "/launches/past" : '', {
     limit: 3,
     order: "desc",
     sort: "launch_date_utc",
@@ -50,7 +52,7 @@ export default function LaunchPad() {
         items={[
           { label: "Home", to: "/" },
           { label: "Launch Pads", to: ".." },
-          { label: launchPad.name },
+          { label: launchPad.name, to: '' },
         ]}
       />
       <Header launchPad={launchPad} />
@@ -69,13 +71,13 @@ export default function LaunchPad() {
 const randomColor = (start = 200, end = 250) =>
   `hsl(${start + end * Math.random()}, 80%, 90%)`;
 
-function Header({ launchPad }) {
+function Header({ launchPad }: { launchPad: Launchpad }) {
   return (
     <Flex
       background={`linear-gradient(${randomColor()}, ${randomColor()})`}
       bgPos="center"
       bgSize="cover"
-      bgRepeat="no-repeat"
+      backgroundRepeat="no-repeat"
       minHeight="15vh"
       position="relative"
       flexDirection={["column", "row"]}
@@ -98,7 +100,7 @@ function Header({ launchPad }) {
           {launchPad.successful_launches}/{launchPad.attempted_launches}{" "}
           successful
         </Badge>
-        {launchPad.stats === "active" ? (
+        {launchPad.status === "active" ? (
           <Badge variantColor="green" fontSize={["sm", "md"]}>
             Active
           </Badge>
@@ -113,7 +115,7 @@ function Header({ launchPad }) {
   );
 }
 
-function LocationAndVehicles({ launchPad }) {
+function LocationAndVehicles({ launchPad }: { launchPad: Launchpad }) {
   return (
     <SimpleGrid columns={[1, 1, 2]} borderWidth="1px" p="4" borderRadius="md">
       <Stat>
@@ -141,19 +143,17 @@ function LocationAndVehicles({ launchPad }) {
   );
 }
 
-function Map({ location }) {
+function Map({ location }: { location: Location }) {
   return (
-    <AspectRatioBox ratio={16 / 5}>
-      <Box
-        as="iframe"
+      <iframe
+      style={{width:'97vw', height: '50vh'}}
+      title={location.name}
         src={`https://maps.google.com/maps?q=${location.latitude}, ${location.longitude}&z=15&output=embed`}
-        alt="demo"
       />
-    </AspectRatioBox>
   );
 }
 
-function RecentLaunches({ launches }) {
+function RecentLaunches({ launches }: { launches: Launch[] }) {
   if (!launches?.length) {
     return null;
   }

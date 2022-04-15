@@ -1,20 +1,22 @@
 import React from "react";
-import { Flex, Box, Text, Stack, Link } from "@chakra-ui/core";
+import { Flex, Box, Text, Stack, Link, LinkProps } from "@chakra-ui/core";
 import { ArrowRight } from "react-feather";
 import { Link as BrowserLink } from "react-router-dom";
 
 export default function Home() {
   return (
     <Stack m="6" spacing="6">
-      <PageLink url="/launches">Browse SpaceX Launches</PageLink>
-      <PageLink url="/launch-pads">Browse SpaceX Launch Pads</PageLink>
+      <PageLink href="/launches">Browse SpaceX Launches</PageLink>
+      <PageLink href="/launch-pads">Browse SpaceX Launch Pads</PageLink>
     </Stack>
   );
 }
 
-function PageLink({ url, children, ...rest }) {
+function PageLink({ href, children, ...rest } : LinkProps) {
   return (
-    <Link as={BrowserLink} to={url} {...rest}>
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    <Link as={BrowserLink} to={href} {...rest}>
       <Flex
         justifyContent="space-between"
         p="6"
