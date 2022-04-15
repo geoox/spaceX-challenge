@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { saveItem, existsItem, deleteItem } from "../utils/localstorage";
-import { useToast, Box, IconButton } from "@chakra-ui/core";
+import { useToast, Box, IconButton } from "@chakra-ui/react";
+import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
 
 type FavoriteStarTypes = {
   launch: any,
@@ -19,10 +20,10 @@ export default function FavoriteStar({ launch, lsKey, icon='star'}:FavoriteStarT
     return (
       <Box ml="auto">
         <IconButton
-          variantColor={isFav ? 'red' : 'yellow'}
+          colorScheme={isFav ? 'red' : 'yellow'}
           aria-label="favorite"
           size="sm"
-          icon={icon ==='star'?'star':'delete'}
+          icon={icon ==='star'? <StarIcon></StarIcon>: <DeleteIcon></DeleteIcon>}
           onClick={(event) => {
             event.preventDefault();
             if (isFav) {
