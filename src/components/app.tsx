@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import {
   Flex,
   Text,
-} from '@chakra-ui/core'
+} from '@chakra-ui/react'
 
 import Launches from "./launches";
 import Launch from "./launch";

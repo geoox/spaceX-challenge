@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
     Button,
     useDisclosure,
@@ -11,7 +11,6 @@ import {
     DrawerCloseButton,
     Accordion,
     AccordionItem,
-    AccordionHeader,
     AccordionPanel,
     AccordionIcon,
     Box,
@@ -20,28 +19,30 @@ import {
     Text,
     Badge,
     Divider,
-} from '@chakra-ui/core'
+    AccordionButton,
+} from '@chakra-ui/react'
 import { getItems, favLaunchesArrayKey, favLaunchpadsArrayKey } from "../utils/localstorage";
 import { Link } from "react-router-dom";
 import FavoriteStar from "./fav-star";
 import { Launch as LaunchModel } from "../models/launch";
 import { Launchpad } from "../models/launchpad";
+import { StarIcon } from "@chakra-ui/icons";
 
 
 export default function Favorites() {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = React.useRef()
+    const btnRef = useRef<HTMLButtonElement>(null)
     const launchesArr = getItems(favLaunchesArrayKey);
     const launchPadsArr = getItems(favLaunchpadsArrayKey);
 
     return (
         <>
-            <Button ref={btnRef} variant="ghost" variantColor="yellow" onClick={onOpen} leftIcon="star">
+            <Button ref={btnRef} variant="ghost" colorScheme="yellow" onClick={onOpen} leftIcon={<StarIcon />}>
                 Favorites
             </Button>
             <Drawer
-                scrollBehavior={'inside'} blockScrollOnMount={false}
+                blockScrollOnMount={false}
                 isOpen={isOpen}
                 placement='right'
                 onClose={onClose}
@@ -53,12 +54,14 @@ export default function Favorites() {
                     <DrawerBody>
                         <Accordion defaultIndex={[0, 1]} allowMultiple>
                             <AccordionItem>
-                                <AccordionHeader>
-                                    <Box flex="1" textAlign="left">
-                                        Launches
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionHeader>
+                                <h2>
+                                    <AccordionButton>
+                                        <Box flex='1' textAlign='left'>
+                                            Launches
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                </h2>
                                 <AccordionPanel pb={4}>
                                     {
                                         launchesArr.map((launch: LaunchModel) =>
@@ -79,15 +82,15 @@ export default function Favorites() {
                                                             {launch.mission_name}
                                                         </Text>
                                                         {launch.launch_success ?
-                                                            <Badge variantColor="green">
+                                                            <Badge colorScheme="green">
                                                                 Successful
-                                                            </Badge> : <Badge ml="1" variantColor="red">
+                                                            </Badge> : <Badge ml="1" colorScheme="red">
                                                                 Failure
                                                             </Badge>}
                                                         <Text fontSize="sm">{launch.rocket.rocket_name}</Text>
                                                     </Box>
                                                     <Box ml="auto">
-                                                    <FavoriteStar launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
+                                                        <FavoriteStar launch={launch} lsKey={favLaunchesArrayKey} icon="delete"></FavoriteStar>
                                                     </Box>
                                                 </Flex>
                                                 <Divider />
@@ -97,12 +100,16 @@ export default function Favorites() {
                             </AccordionItem>
 
                             <AccordionItem>
-                                <AccordionHeader>
-                                    <Box flex="1" textAlign="left">
-                                        Launch pads
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionHeader>
+
+                                <h2>
+                                    <AccordionButton>
+                                        <Box flex='1' textAlign='left'>
+                                            Launch pads
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                </h2>
+
                                 <AccordionPanel pb={4}>
                                     {
                                         launchPadsArr.map((launch: Launchpad) =>
@@ -120,15 +127,15 @@ export default function Favorites() {
                                                             {launch.name}
                                                         </Text>
                                                         {launch.status === 'active' ?
-                                                            <Badge variantColor="green">
+                                                            <Badge colorScheme="green">
                                                                 Active
-                                                            </Badge> : <Badge ml="1" variantColor="red">
+                                                            </Badge> : <Badge ml="1" colorScheme="red">
                                                                 Retired
                                                             </Badge>}
                                                         <Text fontSize="sm">{launch.vehicles_launched.toString()}</Text>
                                                     </Box>
                                                     <Box ml="auto">
-                                                    <FavoriteStar launch={launch} lsKey={favLaunchpadsArrayKey} icon="delete"></FavoriteStar>
+                                                        <FavoriteStar launch={launch} lsKey={favLaunchpadsArrayKey} icon="delete"></FavoriteStar>
                                                     </Box>
                                                 </Flex>
                                                 <Divider />

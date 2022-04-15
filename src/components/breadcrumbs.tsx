@@ -4,7 +4,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Box,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ChevronsRight } from "react-feather";
 
@@ -29,9 +29,9 @@ export default function Breadcrumbs({ items }: BreadcrumbItemsProps) {
         return (
           <BreadcrumbItem isCurrentPage={isCurrentPage} key={item.label}>
             <BreadcrumbLink
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
               as={!isCurrentPage ? Link : undefined}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               to={!isCurrentPage ? item.to : undefined}
             >
               {item.label}
