@@ -1,6 +1,6 @@
 {
+  "homepage": ".",
   "name": "pleo-space-rockets-app",
-  "homepage": "./",
   "version": "1.0.0",
   "contributors": [
     "Maciek Pekala <maciek@pleo.io>",
